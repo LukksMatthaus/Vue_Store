@@ -76,7 +76,6 @@ public class CharController {
 	    	logger.info("this is S:" + chara);
 	    	return ResponseHandler.generateResponse(s.getEntrada(), tst, time, HttpStatus.OK);
 	    } 	
-	    
-	   //test again!!	
+	  
 
 }
