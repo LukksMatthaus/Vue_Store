@@ -1,6 +1,6 @@
 package com.logtest.vueStoreProject.Controller;
 
-import org.hibernate.Session;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -17,11 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.EntityManager;
-
-import com.logtest.vueStoreProject.Model.Category;
 import com.logtest.vueStoreProject.Model.Product;
-import com.logtest.vueStoreProject.Model.Provider;
 import com.logtest.vueStoreProject.repository.ProductRepository;
 import com.logtest.vueStoreProject.response.ResourceNotFoundException;
 
