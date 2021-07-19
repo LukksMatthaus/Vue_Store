@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StopWatch;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -53,6 +54,7 @@ public class CharController {
 	                return Optional.of(naoRecorrente.get(0));
 	            } catch (IndexOutOfBoundsException ex) {
 	                System.out.println("Não foi encontrado nenhuma vogal não repetida");
+	                return Optional.empty();
 	            }
 	        }
 	        return Optional.empty();
@@ -67,15 +69,20 @@ public class CharController {
 	    @PostMapping(value = "/vowel", consumes = MediaType.APPLICATION_JSON_VALUE)
 	    @ResponseBody
 	    public ResponseEntity<Object> lastChar(@RequestBody Map<String, Object> txt) {
-	    	Instant start = Instant.now();
+	    	
+	    	StopWatch watch = new StopWatch();
+	    	watch.start();
 	    	Stream s =  new Stream(txt.get("txt").toString());
-	    	Optional<Character> chara = encontraPrimeiraVogalNaoRepetida(s);
-	    	String tst = chara.get().toString();
-	    	Instant finish = Instant.now();
-	    	long time = Duration.between(start, finish).toMillis();
-	    	logger.info("this is S:" + chara);
-	    	return ResponseHandler.generateResponse(s.getEntrada(), tst, time, HttpStatus.OK);
-	    } 	
+	    	try {
+	    		Optional<Character> chara = encontraPrimeiraVogalNaoRepetida(s);
+		    	String tst = chara.get().toString();
+		    	watch.stop();
+		    	return ResponseHandler.generateResponse(s.getEntrada(), tst, watch.getTotalTimeMillis(), HttpStatus.OK);
+	    	} catch (Exception ex) {
+	    		watch.stop();
+	    		return ResponseHandler.generateResponse(s.getEntrada(), "Vogal não presente", watch.getTotalTimeMillis(), HttpStatus.ACCEPTED);
+	    	}
+    		} 	
 	  
 
 }
