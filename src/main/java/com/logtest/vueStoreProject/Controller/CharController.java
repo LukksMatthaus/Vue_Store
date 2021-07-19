@@ -1,10 +1,7 @@
 package com.logtest.vueStoreProject.Controller;
-
-import java.time.Duration;
-import java.time.Instant;
 import java.util.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +17,7 @@ import com.logtest.vueStoreProject.response.ResponseHandler;
 @RestController
 public class CharController {
 	 private static final String VOGAIS = "aeiou";
-	 private static final Logger logger = LoggerFactory.getLogger(CharController.class);
+	// private static final Logger logger = LoggerFactory.getLogger(CharController.class);
 
 	    /**
 	     * Retorna um Optional com o primeiro char vogal não repetido encontrado ou um Optional vazio caso não encontre

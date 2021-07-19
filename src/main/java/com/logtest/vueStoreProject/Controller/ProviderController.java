@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.logtest.vueStoreProject.Model.Category;
+
 import com.logtest.vueStoreProject.Model.Provider;
 import com.logtest.vueStoreProject.repository.ProviderRepository;
 import com.logtest.vueStoreProject.response.ResourceNotFoundException;
