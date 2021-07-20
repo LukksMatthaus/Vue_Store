@@ -2,7 +2,6 @@ package com.logtest.vueStoreProject.Controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -28,15 +27,14 @@ import com.logtest.vueStoreProject.Model.ProductCategory;
 import com.logtest.vueStoreProject.Model.ProductProvider;
 import com.logtest.vueStoreProject.repository.ProductRepository;
 import com.logtest.vueStoreProject.response.ResourceNotFoundException;
-import com.logtest.vueStoreProject.response.ResponseHandler;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 @RestController
 @RequestMapping("/products")
 public class ProductController {
-	private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
 	@Autowired
 	private ProductRepository pr;
 	
@@ -44,24 +42,43 @@ public class ProductController {
 	 @PersistenceContext
 	 private EntityManager em;
 	
+	 @ApiOperation(value = "Listagem de todos os produtos")
+	    @ApiResponses(value = {
+	    		@ApiResponse(code = 200, message = "Listagem retornada com sucesso")
+	    }) 
 	@GetMapping
 	public List<Product> getAllProducts(){
 		return pr.findAll();
 		
 	}
 	
+	 
+	 @ApiOperation(value = "Listar produto pelo ID")
+	    @ApiResponses(value = {
+	    		@ApiResponse(code = 200, message = "Produto retornado com sucesso")
+	    }) 
 	@GetMapping("/{id}")
 	public ResponseEntity<Product> getProductById(@PathVariable(value ="id") Long pID) throws ResourceNotFoundException{
 		Product p = pr.findById(pID).orElseThrow(() -> new ResourceNotFoundException("Product not found for this id:  " + pID));
 		return ResponseEntity.ok().body(p);
 	}
 	
+	 
+	 @ApiOperation(value = "Inserir novo produto")
+	    @ApiResponses(value = {
+	    		@ApiResponse(code = 200, message = "Produto inserido com sucesso")
+	    }) 
 	@PostMapping("/novo")
 	public Product createProduct(@Validated @RequestBody Product p) {
 		Product px = new Product(p.getId(), p.getNome(), p.getValor(),p.getCategoria(),p.getFornecedor(), p.getQuantidade());
 		return pr.save(px);
 	}
 	
+	 
+	 @ApiOperation(value = "Atualizar produto pelo ID")
+	    @ApiResponses(value = {
+	    		@ApiResponse(code = 200, message = "Produto atualizado com sucesso")
+	    }) 
 	@PutMapping("/editar/{id}")
 	public ResponseEntity<Product> updateProduct(@PathVariable(value = "id") Long pID, @Validated @RequestBody Product pD) throws ResourceNotFoundException{
 		Product p = pr.findById(pID).orElseThrow(() -> new ResourceNotFoundException("Product not found for this id:  " + pID));
@@ -75,6 +92,12 @@ public class ProductController {
 		
 	}
 	
+	 
+	 
+	 @ApiOperation(value = "Deletar produto pelo ID")
+	    @ApiResponses(value = {
+	    		@ApiResponse(code = 200, message = "Produto deletado com sucesso")
+	    }) 
 	@DeleteMapping("/deletar/{id}")
 	public Map<String, Boolean> deleteProduct(@PathVariable(value = "id") Long pID) throws ResourceNotFoundException{
 		Product p = pr.findById(pID).orElseThrow(() -> new ResourceNotFoundException("Product not found for this id:  " + pID));
@@ -86,7 +109,12 @@ public class ProductController {
 		
 		
 	}
-	
+	 
+	 
+	 @ApiOperation(value = "Listagem das categorias juntamente com suas quantidades totais de produtos em estoque")
+	    @ApiResponses(value = {
+	    		@ApiResponse(code = 200, message = "Listagem retornada com sucesso")
+	    }) 
 	@GetMapping("/listarporCategoria")
 	public List<ProductCategory> listByCategory() {
 		StoredProcedureQuery  q = em.createStoredProcedureQuery("public.listbycategory");
@@ -104,6 +132,12 @@ public class ProductController {
 		
 	}
 	
+	 
+	 
+	 @ApiOperation(value = "Listagem dos produtos que estão faltando em estoque")
+	    @ApiResponses(value = {
+	    		@ApiResponse(code = 200, message = "Listagem retornada com sucesso")
+	    }) 	 
 	@GetMapping("/listarporEstoque")
 	public List<Product> listEsotque() {
 		
@@ -113,6 +147,11 @@ public class ProductController {
 		
 	}
 	
+	 
+	 @ApiOperation(value = "Listagem dos fornecedores que possuem produtos faltando em estoque")
+	    @ApiResponses(value = {
+	    		@ApiResponse(code = 200, message = "Listagem retornada com sucesso")
+	    }) 	 
 	@GetMapping("/listarporFornecedor")
 	public List<ProductProvider> listByFornecedor() {
 		StoredProcedureQuery  q = em.createStoredProcedureQuery("public.listbyprovider");

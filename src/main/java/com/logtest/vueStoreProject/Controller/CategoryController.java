@@ -20,6 +20,10 @@ import com.logtest.vueStoreProject.Model.Category;
 import com.logtest.vueStoreProject.repository.CategoryRepository;
 import com.logtest.vueStoreProject.response.ResourceNotFoundException;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 @RestController
 @RequestMapping("/category")
 public class CategoryController {
@@ -27,23 +31,41 @@ public class CategoryController {
 	@Autowired
 	private CategoryRepository cr;
 	
+	 @ApiOperation(value = "Listagem de todas as categorias")
+	    @ApiResponses(value = {
+	    		@ApiResponse(code = 200, message = "Listagem retornada com sucesso")
+	    })
 	@GetMapping
 	public List<Category> getAllCategories(){
 		return cr.findAll();
 		
 	}
-	
+	 
+	 
+	 @ApiOperation(value = "Listar categoria por ID")
+	    @ApiResponses(value = {
+	    		@ApiResponse(code = 200, message = "Categoria retornada com sucesso")
+	    })
 	@GetMapping("/{id}")
 	public ResponseEntity<Category> getCategoryById(@PathVariable(value ="id") Long cID) throws ResourceNotFoundException{
 		Category c = cr.findById(cID).orElseThrow(() -> new ResourceNotFoundException("Category not found for this id:  " + cID));
 		return ResponseEntity.ok().body(c);
 	}
 	
+	
+	 @ApiOperation(value = "Inserir nova categoria")
+	    @ApiResponses(value = {
+	    		@ApiResponse(code = 200, message = "Categoria inserida com sucesso")
+	    }) 
 	@PostMapping("/novo")
 	public Category createCategory(@Validated @RequestBody Category c) {
 		return cr.save(c);
 	}
 	
+	 @ApiOperation(value = "Atualizar uma categoria")
+	    @ApiResponses(value = {
+	    		@ApiResponse(code = 200, message = "Categoria atualizada com sucesso")
+	    })  
 	@PutMapping("/editar/{id}")
 	public ResponseEntity<Category> updateCategory(@PathVariable(value = "id") Long cID, @Validated @RequestBody Category cD) throws ResourceNotFoundException{
 		Category c = cr.findById(cID).orElseThrow(() -> new ResourceNotFoundException("Category not found for this id:  " + cID));
@@ -53,6 +75,11 @@ public class CategoryController {
 		
 	}
 	
+	 
+	 @ApiOperation(value = "Deletar uma categoria")
+	    @ApiResponses(value = {
+	    		@ApiResponse(code = 200, message = "Categoria deletada com sucesso")
+	    })   
 	@DeleteMapping("/deletar/{id}")
 	public Map<String, Boolean> deleteCategory(@PathVariable(value = "id") Long cID) throws ResourceNotFoundException{
 		Category c = cr.findById(cID).orElseThrow(() -> new ResourceNotFoundException("Category not found for this id:  " + cID));

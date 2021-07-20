@@ -1,13 +1,16 @@
 package com.logtest.vueStoreProject.Model;
 
-import javax.persistence.Entity;
 
 
 public class Stream {
+
+
 	 private String entrada;
 
 	    private int indexAtual = -1;
-
+	    
+	    
+	    public Stream() {}
 	    public Stream(String entrada) {
 	        if(entrada != null) {
 	            this.entrada = entrada;

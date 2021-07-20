@@ -14,16 +14,17 @@ import org.springframework.web.bind.annotation.RestController;
 import com.logtest.vueStoreProject.Model.Stream;
 import com.logtest.vueStoreProject.response.ResponseHandler;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ExampleProperty;
+
 @RestController
 public class CharController {
 	 private static final String VOGAIS = "aeiou";
 	// private static final Logger logger = LoggerFactory.getLogger(CharController.class);
 
-	    /**
-	     * Retorna um Optional com o primeiro char vogal não repetido encontrado ou um Optional vazio caso não encontre
-	     * @param stream
-	     * @return ptional<Character>
-	     */
 	    public static Optional<Character> encontraPrimeiraVogalNaoRepetida(Stream stream) {
 
 	        if(stream != null) {
@@ -61,11 +62,15 @@ public class CharController {
 	        return VOGAIS.indexOf(letra) >= 0;
 	    }
 	    
-	    
+	    @ApiOperation(value = "Encontrar  o primeiro caractere Vogal, após uma consoante, onde a mesma é antecessora a uma vogal e que não se repita na string.")
+	    @ApiResponses(value = {
+	    		@ApiResponse(code = 200, message = "Retorna o primeiro caractere vogal que corresponde ao requerimento da questão"),
+	    		@ApiResponse(code = 201, message = "Nenhum caracatere vogal foi encontrado que preencha os requisitos")
+	    })
 	    @ResponseStatus(value = HttpStatus.OK)
 	    @PostMapping(value = "/vowel", consumes = MediaType.APPLICATION_JSON_VALUE)
 	    @ResponseBody
-	    public ResponseEntity<Object> lastChar(@RequestBody Map<String, Object> txt) {
+	    public ResponseEntity<Object> lastChar(@ApiParam(name = "txt", value = "string para buscar a vogal", type = "String", required = true) @RequestBody Map<String, Object> txt) {
 	    	
 	    	StopWatch watch = new StopWatch();
 	    	watch.start();
