@@ -18,15 +18,17 @@ public class Product {
 	private float valor;
 	private Category categoria;
 	private Provider fornecedor;
+	private int quantidade;
 	
 	public Product() {}
 	
-	public Product (Long i, String n, float v, Category c, Provider p) {
+	public Product (Long i, String n, float v, Category c, Provider p, int q) {
 		this.id = i;
 		this.nome = n;
 		this.valor = v;
 		this.categoria = c;
 		this.fornecedor = p;
+		this.quantidade = q;
 	}
 	
 	
@@ -75,6 +77,14 @@ public class Product {
 
 	public void setFornecedor(Provider fornecedor) {
 		this.fornecedor = fornecedor;
+	}
+	@Column(name = "quantidade", nullable = false)
+	public int getQuantidade() {
+		return quantidade;
+	}
+
+	public void setQuantidade(int quantidade) {
+		this.quantidade = quantidade;
 	}
 	
 	
