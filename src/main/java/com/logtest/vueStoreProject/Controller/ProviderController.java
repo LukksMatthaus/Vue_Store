@@ -27,7 +27,7 @@ import io.swagger.annotations.ApiResponses;
 
 
 @RestController
-@RequestMapping("/provider")
+@RequestMapping("/fornecedor")
 public class ProviderController {
 
 	@Autowired
@@ -60,7 +60,7 @@ public class ProviderController {
     @ApiResponses(value = {
     		@ApiResponse(code = 200, message = "Fornecedor inserido com sucesso")
     })
-	@PostMapping("/novo")
+	@PostMapping
 	public Provider createProvider(@Validated @RequestBody Provider p) {
 		return pr.save(p);
 	}
@@ -70,7 +70,7 @@ public class ProviderController {
     @ApiResponses(value = {
     		@ApiResponse(code = 200, message = "Fornecedor atualziado com sucesso")
     })
-	@PutMapping("/editar/{id}")
+	@PutMapping("/{id}")
 	public ResponseEntity<Provider> updateProvider(@PathVariable(value = "id") Long pID, @Validated @RequestBody Provider pD) throws ResourceNotFoundException{
 		Provider p = pr.findById(pID).orElseThrow(() -> new ResourceNotFoundException("Provider not found for this id:  " + pID));
 		p.setDescricao(pD.getDescricao());
@@ -85,7 +85,7 @@ public class ProviderController {
     @ApiResponses(value = {
     		@ApiResponse(code = 200, message = "Fornecedor deletado com sucesso")
     })
-	@DeleteMapping("/deletar/{id}")
+	@DeleteMapping("/{id}")
 	public Map<String, Boolean> deleteProvider(@PathVariable(value = "id") Long pID) throws ResourceNotFoundException{
 		Provider p = pr.findById(pID).orElseThrow(() -> new ResourceNotFoundException("Provider not found for this id:  " + pID));
 		pr.delete(p);

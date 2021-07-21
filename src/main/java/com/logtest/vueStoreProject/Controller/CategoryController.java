@@ -25,7 +25,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 @RestController
-@RequestMapping("/category")
+@RequestMapping("/categoria")
 public class CategoryController {
 
 	@Autowired
@@ -57,7 +57,7 @@ public class CategoryController {
 	    @ApiResponses(value = {
 	    		@ApiResponse(code = 200, message = "Categoria inserida com sucesso")
 	    }) 
-	@PostMapping("/novo")
+	@PostMapping
 	public Category createCategory(@Validated @RequestBody Category c) {
 		return cr.save(c);
 	}
@@ -66,7 +66,7 @@ public class CategoryController {
 	    @ApiResponses(value = {
 	    		@ApiResponse(code = 200, message = "Categoria atualizada com sucesso")
 	    })  
-	@PutMapping("/editar/{id}")
+	@PutMapping("/{id}")
 	public ResponseEntity<Category> updateCategory(@PathVariable(value = "id") Long cID, @Validated @RequestBody Category cD) throws ResourceNotFoundException{
 		Category c = cr.findById(cID).orElseThrow(() -> new ResourceNotFoundException("Category not found for this id:  " + cID));
 		c.setDescricao(cD.getDescricao());
@@ -80,7 +80,7 @@ public class CategoryController {
 	    @ApiResponses(value = {
 	    		@ApiResponse(code = 200, message = "Categoria deletada com sucesso")
 	    })   
-	@DeleteMapping("/deletar/{id}")
+	@DeleteMapping("/{id}")
 	public Map<String, Boolean> deleteCategory(@PathVariable(value = "id") Long cID) throws ResourceNotFoundException{
 		Category c = cr.findById(cID).orElseThrow(() -> new ResourceNotFoundException("Category not found for this id:  " + cID));
 		cr.delete(c);

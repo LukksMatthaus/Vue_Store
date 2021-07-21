@@ -33,7 +33,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 @RestController
-@RequestMapping("/products")
+@RequestMapping("/produtos")
 public class ProductController {
 	@Autowired
 	private ProductRepository pr;
@@ -68,7 +68,7 @@ public class ProductController {
 	    @ApiResponses(value = {
 	    		@ApiResponse(code = 200, message = "Produto inserido com sucesso")
 	    }) 
-	@PostMapping("/novo")
+	@PostMapping
 	public Product createProduct(@Validated @RequestBody Product p) {
 		Product px = new Product(p.getId(), p.getNome(), p.getValor(),p.getCategoria(),p.getFornecedor(), p.getQuantidade());
 		return pr.save(px);
@@ -79,7 +79,7 @@ public class ProductController {
 	    @ApiResponses(value = {
 	    		@ApiResponse(code = 200, message = "Produto atualizado com sucesso")
 	    }) 
-	@PutMapping("/editar/{id}")
+	@PutMapping("/{id}")
 	public ResponseEntity<Product> updateProduct(@PathVariable(value = "id") Long pID, @Validated @RequestBody Product pD) throws ResourceNotFoundException{
 		Product p = pr.findById(pID).orElseThrow(() -> new ResourceNotFoundException("Product not found for this id:  " + pID));
 		p.setNome(pD.getNome());
@@ -98,7 +98,7 @@ public class ProductController {
 	    @ApiResponses(value = {
 	    		@ApiResponse(code = 200, message = "Produto deletado com sucesso")
 	    }) 
-	@DeleteMapping("/deletar/{id}")
+	@DeleteMapping("/{id}")
 	public Map<String, Boolean> deleteProduct(@PathVariable(value = "id") Long pID) throws ResourceNotFoundException{
 		Product p = pr.findById(pID).orElseThrow(() -> new ResourceNotFoundException("Product not found for this id:  " + pID));
 		pr.delete(p);
@@ -115,7 +115,7 @@ public class ProductController {
 	    @ApiResponses(value = {
 	    		@ApiResponse(code = 200, message = "Listagem retornada com sucesso")
 	    }) 
-	@GetMapping("/listarporCategoria")
+	@GetMapping("/listar-por-categoria")
 	public List<ProductCategory> listByCategory() {
 		StoredProcedureQuery  q = em.createStoredProcedureQuery("public.listbycategory");
 		q.execute();
@@ -138,7 +138,7 @@ public class ProductController {
 	    @ApiResponses(value = {
 	    		@ApiResponse(code = 200, message = "Listagem retornada com sucesso")
 	    }) 	 
-	@GetMapping("/listarporEstoque")
+	@GetMapping("/listar-por-estoque")
 	public List<Product> listEsotque() {
 		
 		return pr.findByEstoque();
@@ -152,7 +152,7 @@ public class ProductController {
 	    @ApiResponses(value = {
 	    		@ApiResponse(code = 200, message = "Listagem retornada com sucesso")
 	    }) 	 
-	@GetMapping("/listarporFornecedor")
+	@GetMapping("/listar-por-fornecedor")
 	public List<ProductProvider> listByFornecedor() {
 		StoredProcedureQuery  q = em.createStoredProcedureQuery("public.listbyprovider");
 		q.execute();
